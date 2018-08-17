@@ -64,7 +64,7 @@ class App extends Component {
     const data = JSON.stringify({
       week: this.state.week,
       title: this.state.title,
-      content: this.state.content
+      content: this.state.content,
     })
     console.log('id is: ', id)
     fetch(`http://localhost:4000/api/momdiaries/${id}`, {
@@ -90,13 +90,13 @@ class App extends Component {
     );
     return (
       <div className="App">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} style={{position: 'fixed'}}>
         <input type="text" placeholder="title" onChange={e => this.setState({title: e.target.value})}/>
         <input type="text" placeholder="week" onChange={e => this.setState({week: e.target.value})}/>
         <input type="text" placeholder="content" onChange={e => this.setState({content: e.target.value})}/>
         <button type="submit">Submit</button>
         </form>
-        <div>
+        <div className="container">
           {diaryEntries}
         </div>
       </div>
