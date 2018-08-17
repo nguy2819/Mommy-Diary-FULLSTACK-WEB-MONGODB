@@ -11,7 +11,7 @@ const MomDiarySchema = new Schema({
         type: String,
         required: [true, 'Title filed is required'],
     },
-    diary: {
+    content: {
         type: String,
         required: [true, 'Diary field is required'],
     }

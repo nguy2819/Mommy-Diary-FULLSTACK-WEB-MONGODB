@@ -32,14 +32,17 @@ router.post('/momdiaries', function (req, res, next) {
 });
 
 router.delete('/momdiaries/:id', function (req, res, next) {
+    console.log('deleting');
     _momdiary2.default.findByIdAndRemove({ _id: req.params.id }).then(function (momdiary) {
         res.send(momdiary);
     });
 });
 
 router.put('/momdiaries/:id', function (req, res, next) {
-    _momdiary2.default.findByIdAndUpdate({ _id: req.params.id }).then(function (momdiary) {
-        res.send(momdiary);
+    _momdiary2.default.findByIdAndUpdate({ _id: req.params.id }, req.body).then(function () {
+        _momdiary2.default.findOne({ _id: req.params.id }).then(function (momdiary) {
+            res.send(momdiary);
+        });
     });
 });
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import DiaryEntry from './components/diaryEntry';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -8,9 +7,15 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      entries: []
+      entries: [],
+      title: '',
+      week: '',
+      content: ''
     }
     this.getDiaryEntries = this.getDiaryEntries.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount(){
@@ -26,17 +31,71 @@ class App extends Component {
     this.setState({entries: responseJson});
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const data = JSON.stringify({
+      week: this.state.week,
+      title: this.state.title,
+      content: this.state.content
+    })
+    fetch('http://localhost:4000/api/momdiaries', {
+      method: 'post',
+      body: data,
+      headers: {
+        "Content-type": "application/json"
+      }
+    }).then(data => {
+      this.getDiaryEntries();
+    })
+  }
+
+  handleDelete(e, id){
+    e.preventDefault();
+    console.log('id is: ', id)
+    fetch(`http://localhost:4000/api/momdiaries/${id}`, {
+      method: 'delete'
+    }).then(data => {
+      this.getDiaryEntries();
+    })
+  }
+
+  handleUpdate(e, id){
+    e.preventDefault();
+    const data = JSON.stringify({
+      week: this.state.week,
+      title: this.state.title,
+      content: this.state.content
+    })
+    console.log('id is: ', id)
+    fetch(`http://localhost:4000/api/momdiaries/${id}`, {
+      method: 'put',
+      body: data,
+      headers: {
+        "Content-type": "application/json"
+      }
+  }).then(data => {
+    this.getDiaryEntries();
+    })
+  }
+
   render() {
-    const diaryEntries = this.state.entries.map(e => <DiaryEntry title={e.title} week={e.week} diary={e.diary}/>);
+    const diaryEntries = this.state.entries.map(e => 
+      <DiaryEntry 
+        id={e._id}
+        title={e.title} 
+        week={e.week} 
+        content={e.content}
+        deleteAction={this.handleDelete}
+        updateAction={this.handleUpdate}/>
+    );
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <form onSubmit={this.handleSubmit}>
+        <input type="text" placeholder="title" onChange={e => this.setState({title: e.target.value})}/>
+        <input type="text" placeholder="week" onChange={e => this.setState({week: e.target.value})}/>
+        <input type="text" placeholder="content" onChange={e => this.setState({content: e.target.value})}/>
+        <button type="submit">Submit</button>
+        </form>
         <div>
           {diaryEntries}
         </div>
