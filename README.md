@@ -13,11 +13,14 @@ NPM isntall server dependencies
 * rimraf 
   * (npm install --save-dev babel-cli babel-preset-es2015 rimraf)
 
-## In package.json, add:
+## [To run server](https://www.codementor.io/iykyvic/writing-your-nodejs-apps-using-es6-6dh0edw2o) 
+- in package.json, under scripts:
 ```
-"start-server": "npm run build-server && node dist-server/index.js",
-"build-server": "rimraf dist-server/ && babel ./server --out-dir dist-server/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files"
+ "start-server": "npm run build-server && node dist-server/index.js",
+ "build-server": "rimraf dist-server/ && babel ./server --out-dir dist-server/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files"
 ```
+- A new start command and a new build command. ["start": "npm run build && node dist/index.js"](https://www.codementor.io/iykyvic/writing-your-nodejs-apps-using-es6-6dh0edw2o)
+
 
 ## Connect MongoDB
 - In terminal, make sure you're in the home directory `cd ~`
